@@ -1,20 +1,20 @@
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView
 
 from product.models import Product
 
 
-# Create your views here.
+class ProductsListView(ListView):
+    model = Product
 
-# def index(request):
-#    return render(request, 'product/base.html')
+    #product/product_list.html
 
-def products_list(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'product/products_list.html', context)
+
+class ProductDetailView(DetailView):
+    model = Product
 
 
 def products_details(request, pk):
     product = get_object_or_404(Product, pk=pk)
     context = {'product': product}
-    return render(request, 'product/products_details.html', context)
+    return render(request, 'product/product_detail.html', context)
