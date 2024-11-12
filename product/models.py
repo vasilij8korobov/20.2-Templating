@@ -63,7 +63,15 @@ class Product(models.Model):
         verbose_name="Дата последнего изменения",
         help_text="Введите дату последнего изменения",
         auto_now=True
-    )  # Дата последнего изменения(записи в БД)
+    )
+
+    views_counter = models.PositiveIntegerField(
+        verbose_name="Счетчик просмотров",
+        help_text="Укажите количество просмотров",
+        default=0
+    )
+
+    # Дата последнего изменения(записи в БД)
 
     # manufactured_at = models.DateField(
     #     verbose_name='Дата производства', help_text='дата производства', **NULLABLE
