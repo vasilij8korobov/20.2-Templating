@@ -1,14 +1,13 @@
 {% extends 'product/base.html' %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <form class="row" method="post" enctype="multipart/form-data">
-                <div class="card">
-                    <div class="card-body">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                    </div>
+    <form class="row" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+
                     <button type="submit" class="btn btn-primary">
                         {% if object %}
                         Сохранить
@@ -17,8 +16,19 @@
                         {% endif %}
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    {{ formset.management_form }}
+                    {% for form in formset.form %}
+                    {{ form.as_p }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
+
 {% endblock %}
