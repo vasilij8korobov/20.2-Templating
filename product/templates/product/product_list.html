@@ -12,6 +12,11 @@
                         <p class="card-text">{{ product.name }}</p>
                         <p class="card-text">{{ product.description|truncatechars:100 }}</p>
                         <p class="card-text">{{ product.purchase_price }}</p>
+                        {% if product.current_version %}
+                        <p class="card-text">Текущая версия: {{ product.current_version.name_version }} (Версия {{ product.current_version.num_version }})</p>
+                        {% else %}
+                        <p class="card-text">Текущая версия: Нет активной версии</p>
+                        {% endif %}
                         <div class="d-grid gap-2  mx-auto">
 
                             <a class="btn btn-primary" href="{% url 'product:products_details' product.pk %}"

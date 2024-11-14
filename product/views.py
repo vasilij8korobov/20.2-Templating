@@ -14,14 +14,13 @@ from product.models import Product, Version
 
 class ProductsListView(ListView):
     model = Product
-    template_name = 'product_form.html'
-
+    template_name = 'product_list.html'
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context_data = super().get_context_data(**kwargs)
         for product in context_data['object_list']:
-            status_version = Version.objects.filter(product=product, status_version=True).first()
-            product.status_version = status_version
+            current_version = Version.objects.filter(product=product, status_version=True).first()
+            product.current_version = current_version
         return context_data
 
 
@@ -33,6 +32,12 @@ class ProductDetailView(DetailView):
         self.object.views_counter += 1
         self.object.save()
         return self.object
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        current_version = Version.objects.filter(product=self.object, status_version=True).first()
+        context_data['current_version'] = current_version
+        return context_data
 
 
 class ProductCreateView(CreateView):
@@ -65,6 +70,9 @@ class ProductUpdateView(UpdateView):
             self.object = form.save()
             formset.instance = self.object
             formset.save()
+            for version_form in formset:
+                if version_form.cleaned_data.get('status_version'):
+                    self.object.set_current_version(version_form.instance)
             return super().form_valid(form)
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=formset))

@@ -72,6 +72,12 @@ class Product(models.Model):
         default=0,
     )
 
+    def set_current_version(self, version):
+        # Сбросить все текущие версии
+        self.versions.update(status_version=False)
+        # Установить новую текущую версию
+        version.status_version = True
+        version.save()
     # Дата последнего изменения(записи в БД)
 
     # manufactured_at = models.DateField(
@@ -92,7 +98,7 @@ class Version(models.Model):
         Product,
         on_delete=models.SET_NULL,
         **NULLABLE,
-        related_name="product",
+        related_name="versions",
         verbose_name="Продукт",
     )
     num_version = models.IntegerField(
@@ -104,7 +110,7 @@ class Version(models.Model):
         help_text="Укажите название версии",
     )
     status_version = models.BooleanField(
-        default=True,
+        default=False,
         verbose_name="Статус версии",
     )
 
@@ -114,4 +120,4 @@ class Version(models.Model):
         ordering = ["product", "num_version"]
 
     def __str__(self):
-        return f"{self.product}"
+        return f"{self.product} - {self.name_version} (Версия {self.num_version})"
