@@ -17,16 +17,20 @@ class ProductForm(ModelForm):
         "радар",
     ]
 
-    class meta:
+    class Meta:
         model = Product
-        fields = ("name", "manufactured_at", "image")
+        fields = ("name", "description", "photo", "category", "purchase_price")
 
-    def clean_name(self):
-        clean_name = self.cleaned_data.get("name")
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get("name")
+        description = cleaned_data.get("description")
         for word in self.bad_words:
-            if word in clean_name:
-                raise ValidationError(f"{word}- такое слово недопустимо")
-        return clean_name
+            if word in name:
+                self.add_error('name', ValidationError(f"{word} - такое слово недопустимо в имени"))
+            if word in description:
+                self.add_error('description', ValidationError(f"{word} - такое слово недопустимо в описании"))
+        return cleaned_data
 
 
 class VersionForm(ModelForm):

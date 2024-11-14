@@ -2,27 +2,33 @@
 {% block content %}
 <div class="container">
     <form class="row" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
         <div class="col-6">
             <div class="card">
+                {% if object %}
+                <p class="card-text">Редактирование продукта</p>
+                {% else %}
+                <p class="card-text">Создание продукта</p>
+                {% endif %}
                 <div class="card-body">
-
-                    <button type="submit" class="btn btn-primary">
-                        {% if object %}
-                        Сохранить
-                        {% else %}
-                        Создать
-                        {% endif %}
-                    </button>
+                    {% csrf_token %}
+                    {{ form.as_p }}
                 </div>
+                <button type="submit" class="btn btn-primary">
+                    {% if object %}
+                    Сохранить
+                    {% else %}
+                    Создать
+                    {% endif %}
+                </button>
+
             </div>
         </div>
         <div class="col-6">
             <div class="card">
+                <p class="card-text">Версия продукта</p>
                 <div class="card-body">
                     {{ formset.management_form }}
-                    {% for form in formset.form %}
+                    {% for form in formset %}
                     {{ form.as_p }}
                     {% endfor %}
                 </div>
@@ -30,5 +36,4 @@
         </div>
     </form>
 </div>
-
 {% endblock %}
