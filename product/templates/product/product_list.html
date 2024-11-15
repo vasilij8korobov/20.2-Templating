@@ -18,15 +18,10 @@
                         <p class="card-text">Текущая версия: Нет активной версии</p>
                         {% endif %}
                         <div class="d-grid gap-2  mx-auto">
-
-                            <a class="btn btn-primary" href="{% url 'product:products_details' product.pk %}"
-                               role="button">Посмотреть</a>
-                            <a class="btn btn-secondary" href="{% url 'product:product_update' product.pk %}"
-                               role="button">Редактировать</a>
-                            <a class="btn btn-md mt-3 btn-danger" href="{% url 'product:product_delete' product.pk %}"
-                               role="button">Удалить</a>
+                            <a class="btn btn-primary" href="{% url 'product:products_details' product.pk %}" role="button">Посмотреть</a>
+                            <a class="btn btn-secondary" href="{% url 'product:product_update' product.pk %}" role="button">Редактировать</a>
+                            <a class="btn btn-md mt-3 btn-danger" href="{% url 'product:product_delete' product.pk %}" role="button">Удалить</a>
                             <p class="text-body-secondary text-sm"></p>
-
                         </div>
                     </div>
                 </div>
