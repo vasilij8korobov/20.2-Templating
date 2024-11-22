@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy, reverse
 from django.views.generic import (
@@ -12,9 +13,14 @@ from product.forms import ProductForm, VersionForm
 from product.models import Product, Version
 
 
-class ProductsListView(ListView):
+class UserLoginRequiredMixin(LoginRequiredMixin):
+    login_url = "/users/"
+    permission_denied_message = "только для авторизованных пользователей"
+
+
+class ProductsListView(LoginRequiredMixin, ListView):
     model = Product
-    template_name = 'product_list.html'
+    template_name = 'product/product_list.html'
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -24,7 +30,7 @@ class ProductsListView(ListView):
         return context_data
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
 
     def get_object(self, queryset=None):
@@ -40,7 +46,7 @@ class ProductDetailView(DetailView):
         return context_data
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("product:products_list")
@@ -58,7 +64,9 @@ class ProductCreateView(CreateView):
         context_data = self.get_context_data()
         formset = context_data['formset']
         if form.is_valid() and formset.is_valid():
-            self.object = form.save()
+            self.object = form.save(commit=False)
+            self.object.owner = self.request.user
+            self.object.save()
             formset.instance = self.object
             formset.save()
             for version_form in formset:
@@ -69,7 +77,7 @@ class ProductCreateView(CreateView):
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("product:products_list")
@@ -101,6 +109,6 @@ class ProductUpdateView(UpdateView):
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("product:products_list")

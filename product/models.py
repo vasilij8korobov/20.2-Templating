@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import User
 
 NULLABLE = {"blank": True, "null": True}
 
@@ -61,6 +62,13 @@ class Product(models.Model):
         verbose_name="Счетчик просмотров",
         help_text="Укажите количество просмотров",
         default=0,
+    )
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        verbose_name="Владелец",
+        help_text="Владелец продукта",
+        **NULLABLE,
     )
 
     def set_current_version(self, version):
