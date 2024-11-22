@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "product",
     "blog",
     "crispy_forms",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "users.User"
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+# mail settings
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "kavyabass51@gmail.com"   #здесь ваша почта
+EMAIL_HOST_PASSWORD = "**********"          #здесь ваш пароль от почты
+EMAIL_USE_SSL = True
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
