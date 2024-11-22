@@ -137,8 +137,8 @@ LOGOUT_REDIRECT_URL = "/"
 # mail settings
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "kavyabass51@gmail.com"
-EMAIL_HOST_PASSWORD = "**********"
+EMAIL_HOST_USER = "kavyabass51@gmail.com"   #здесь ваша почта
+EMAIL_HOST_PASSWORD = "**********"          #здесь ваш пароль от почты
 EMAIL_USE_SSL = True
 
 SERVER_EMAIL = EMAIL_HOST_USER
